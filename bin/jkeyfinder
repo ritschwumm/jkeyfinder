@@ -1,0 +1,72 @@
+#!/bin/bash
+
+BASE="$(dirname "$0")/.."
+
+M2_REPO="$HOME/.m2/repository"
+IVY_CACHE="$HOME/.ivy2/cache"
+
+OWN_CLASSPATH="$BASE/target/eclipse-classes:$BASE/target/classes:$BASE/target/jkeyfinder-0.1.0.jar"
+MVN_CLASSPATH="$M2_REPO/com/github/wendykierp/JTransforms/3.0/JTransforms-3.0.jar"
+IVY_CLASSPATH="$IVY_CACHE/com.github.wendykierp/JTransforms/jars/JTransforms-3.0.jar"
+CLASSPATH="$OWN_CLASSPATH:$OWN_CLASSPATH:$IVY_CLASSPATH:$MVN_CLASSPATH"
+
+MAINCLASS=jkeyfinder.Main
+FRAMERATE=5512
+
+log() {
+	echo >&2 "$@"
+}
+
+usageexit() {
+	log "usage: $(basename "$0") [-r rate] file"
+	exit 1
+}
+
+decode() {
+	local input="$1"
+	local output="$2"
+	local framerate="$3"
+	avconv						\
+	-loglevel	fatal			\
+	-y							\
+	-i			"$input"		\
+	-vn							\
+	-acodec		pcm_s16le		\
+	-ar			"$framerate"	\
+	-ac			1				\
+	-f			s16le			\
+	"$output"
+}
+
+runvm() {
+	local framerate="$1"
+	local rawfile="$2"
+	java -cp "$CLASSPATH" "$MAINCLASS" "$framerate" "$rawfile"
+}
+
+if [ "$1" = "-r" ]
+then
+	[ $# -eq 3 ] || usageexit
+	log "analyzing"
+	runvm "$2" "$3"
+else
+	which avconv >/dev/null || {
+		log "error: avconv binary not found"
+		exit 1
+	}
+	
+	[ $# -eq 1 ] || usageexit
+	file="$1"
+	
+	tempdir=$(mktemp -d)
+	rawfile="$tempdir/mono.raw"
+	
+	log "decoding"
+	decode "$file" "$rawfile" "$FRAMERATE"
+	
+	log "analyzing"
+	runvm "$FRAMERATE" "$rawfile"
+	
+	log "cleaning up"
+	rm -r "$tempdir"
+fi

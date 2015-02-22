@@ -1,0 +1,12 @@
+this is a very stripped down and slightly modified re-implementation
+of Ibrahim Sha'ath's keyfinder algorithm in java. everything not
+vital for simply getting the key of some track has been omitted.
+
+this tool expects raw 16 bit, signed, little endian, mono pcm data
+that should have been downsampled to 5.512kHz sample rate. avconv
+has proven useful to convert mp3 files to this format.
+
+jkeyfinder needs java 8 and uses the JTransforms library.
+
+see http://www.ibrahimshaath.co.uk/keyfinder/ for the original,
+and https://github.com/ibsh/libKeyFinder for its code.

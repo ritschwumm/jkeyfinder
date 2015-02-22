@@ -1,0 +1,6 @@
+target/
+project/boot/
+/.settings
+/.project
+/.classpath
+/versatz/
