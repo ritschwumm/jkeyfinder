@@ -11,11 +11,12 @@ public final class KeyFinder {
 	private KeyFinder() {}
 	
 	/** absent means "silence" */
-	public static Optional<Key> findKey(Audio audio) {
-		final float[][]		full	= chromagramTA(audio);
-		final float[]		vector	= collapseTO(full);
-		final Optional<Key>	key		= classify(vector);
-		return key;
+	public static Result examine(Audio audio) {
+		final float[][]		chromagram	= chromagramTA(audio);
+		final float[]		strengths	= collapseTO(chromagram);
+		final int			strongest	= strongest(strengths);
+		final Optional<Key>	key			= classify(strengths);
+		return new Result(key, chromagram, strengths, strongest);
 	}
 
 	//-------------------------------------------------------------------------
@@ -52,7 +53,7 @@ public final class KeyFinder {
 		return chromagram;
 	}
 	
-	private static Kernel[] skKernels(int frameRate) {
+	private static Kernel[] skKernels(double frameRate) {
 		final Kernel[]	kernels		= new Kernel[Config.chromaSize];
 		final double	binFraction	= 1.0 / Config.semitones;
 		final float		qFactor		= (float)(Config.skStretch * (pow2(binFraction) - 1));
@@ -60,7 +61,7 @@ public final class KeyFinder {
 		for (int bin=0; bin<Config.chromaSize; bin++) {
 			final float centerFrequency		= (float)(Config.startFreq * pow2(bin * binFraction));
 			
-			final float windowCenter		= centerFrequency * Config.fftSize / frameRate;
+			final float windowCenter		= (float)(centerFrequency * Config.fftSize / frameRate);
 			final float windowSize			= windowCenter	* qFactor;
 			final float windowStart			= windowCenter	- windowSize/2;
 			final float windowEnd			= windowCenter	+ windowSize/2;
@@ -118,6 +119,20 @@ public final class KeyFinder {
 	
 	//-------------------------------------------------------------------------
 	//## classification
+	
+	/** absent means "silence" */
+	private static int strongest(float[] inputVO) {
+		int		bestNote	= -1;
+		float	bestScore	= Float.MIN_NORMAL;
+		for (int note=0; note<inputVO.length; note++) {
+			final float score	= inputVO[note];
+			if (score > bestScore) {
+				bestScore	= score;
+				bestNote	= note;
+			}
+		}
+		return bestNote;
+	}
 
 	private static float[] collapseTO(float[][] inputTA) {
 		final float[] outputVO	= new float[Config.semitones];
@@ -138,12 +153,14 @@ public final class KeyFinder {
 	private static Optional<Key> classify(float[] inputVO) {
 		Optional<Key>	bestKey		= Optional.empty();
 		float			bestScore	= score(Config.profile.scale(Optional.<Mode>empty()), 0, inputVO);
-		for (Key key : Key.values()) {
-			final Scale	scale	= Config.profile.scale(Optional.of(key.mode));
-			final float score	= score(scale, key.note, inputVO);
-			if (score > bestScore) {
-				bestScore	= score;
-				bestKey		= Optional.of(key);
+		for (Mode mode : Mode.values()) {
+			for (Pitch pitch: Pitch.values()) {
+				final Scale	scale	= Config.profile.scale(Optional.of(mode));
+				final float score	= score(scale, pitch.ordinal(), inputVO);
+				if (score > bestScore) {
+					bestScore	= score;
+					bestKey		= Optional.of(new Key(pitch, mode));
+				}
 			}
 		}
 		return bestKey;

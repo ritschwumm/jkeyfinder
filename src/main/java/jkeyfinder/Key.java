@@ -1,36 +1,36 @@
 package jkeyfinder;
 
-public enum Key {
-	A_MAJOR		(Mode.MAJOR, 0),
-	A_MINOR		(Mode.MINOR, 0),
-	B_FLAT_MAJOR(Mode.MAJOR, 1),
-	B_FLAT_MINOR(Mode.MINOR, 1),
-	B_MAJOR		(Mode.MAJOR, 2),
-	B_MINOR		(Mode.MINOR, 2),
-	C_MAJOR		(Mode.MAJOR, 3),
-	C_MINOR		(Mode.MINOR, 3),
-	D_FLAT_MAJOR(Mode.MAJOR, 4),
-	D_FLAT_MINOR(Mode.MINOR, 4),
-	D_MAJOR		(Mode.MAJOR, 5),
-	D_MINOR		(Mode.MINOR, 5),
-	E_FLAT_MAJOR(Mode.MAJOR, 6),
-	E_FLAT_MINOR(Mode.MINOR, 6),
-	E_MAJOR		(Mode.MAJOR, 7),
-	E_MINOR		(Mode.MINOR, 7),
-	F_MAJOR		(Mode.MAJOR, 8),
-	F_MINOR		(Mode.MINOR, 8),
-	G_FLAT_MAJOR(Mode.MAJOR, 9),
-	G_FLAT_MINOR(Mode.MINOR, 9),
-	G_MAJOR		(Mode.MAJOR, 10),
-	G_MINOR		(Mode.MINOR, 10),
-	A_FLAT_MAJOR(Mode.MAJOR, 11),
-	A_FLAT_MINOR(Mode.MINOR, 11);
-	
+public final class Key {
+	public final Pitch	pitch;
 	public final Mode	mode;
-	public final int	note;
 
-	private Key(Mode mode, int note) {
+	public Key(Pitch pitch, Mode mode) {
+		this.pitch	= pitch;
 		this.mode	= mode;
-		this.note	= note;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((mode == null) ? 0 : mode.hashCode());
+		result = prime * result + ((pitch == null) ? 0 : pitch.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		Key other = (Key) obj;
+		if (mode != other.mode) return false;
+		if (pitch != other.pitch) return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Key [pitch=" + pitch + ", mode=" + mode + "]";
 	}
 }

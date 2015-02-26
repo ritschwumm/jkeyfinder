@@ -1,7 +1,7 @@
 package jkeyfinder;
 
 public interface Audio {
-	int frameRate();
+	double frameRate();
 	int frameCount();
 	float get(int frame);
 }

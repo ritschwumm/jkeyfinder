@@ -12,13 +12,13 @@ public final class Loader {
 	private static final float normFactor	= -1f / -(float)Short.MIN_VALUE;
 	
 	/** expects raw pcm data; 16 bit, signed, little endian, mono */
-	public static Audio load(final File file, final int frameRate) throws IOException {
+	public static Audio load(final File file, final double frameRate) throws IOException {
 		try(final RandomAccessFile raf = new RandomAccessFile(file, "r")) {
 			final ByteBuffer	byteBuffer	= raf.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, file.length());
 			byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 			final ShortBuffer	shortBuffer	= byteBuffer.asShortBuffer();
 			return new Audio() {
-				public int frameRate() {
+				public double frameRate() {
 					return frameRate;
 				}
 				public int frameCount() {

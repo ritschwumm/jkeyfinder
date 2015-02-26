@@ -1,7 +1,6 @@
 package jkeyfinder;
 
 import java.io.File;
-import java.util.Optional;
 
 import org.jtransforms.utils.ConcurrencyUtils;
 
@@ -18,9 +17,9 @@ public final class Main {
 		// don't spawn any daemon threads
 		ConcurrencyUtils.setNumberOfThreads(1);
 	
-		final Audio			audio	= Loader.load(file, frameRate);
-		final Optional<Key>	keyOpt	= KeyFinder.findKey(audio);
-		final String		str		= Render.output(keyOpt);
+		final Audio		audio	= Loader.load(file, frameRate);
+		final Result	result	= KeyFinder.examine(audio);
+		final String	str		= Render.result(result);
 		System.out.println(str);
 	}
 }

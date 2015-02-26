@@ -5,12 +5,13 @@ BASE="$(dirname "$0")/.."
 M2_REPO="$HOME/.m2/repository"
 IVY_CACHE="$HOME/.ivy2/cache"
 
-OWN_CLASSPATH="$BASE/target/eclipse-classes:$BASE/target/classes:$BASE/target/jkeyfinder-0.1.0.jar"
+OWN_CLASSPATH="$BASE/target/eclipse-classes:$BASE/target/classes:$BASE/target/jkeyfinder-0.2.0-SNAPSHOT.jar"
 MVN_CLASSPATH="$M2_REPO/com/github/wendykierp/JTransforms/3.0/JTransforms-3.0.jar"
 IVY_CLASSPATH="$IVY_CACHE/com.github.wendykierp/JTransforms/jars/JTransforms-3.0.jar"
 CLASSPATH="$OWN_CLASSPATH:$OWN_CLASSPATH:$IVY_CLASSPATH:$MVN_CLASSPATH"
 
 MAINCLASS=jkeyfinder.Main
+# should be 5512.5, but avconv can't deal with non-integer rates
 FRAMERATE=5512
 
 log() {
@@ -65,8 +66,12 @@ else
 	decode "$file" "$rawfile" "$FRAMERATE"
 	
 	log "analyzing"
-	runvm "$FRAMERATE" "$rawfile"
+	result=$(
+		runvm "$FRAMERATE" "$rawfile"
+	)
 	
 	log "cleaning up"
 	rm -r "$tempdir"
+	
+	echo "$result"$'\t'"$file"
 fi

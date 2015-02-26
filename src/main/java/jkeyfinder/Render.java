@@ -5,39 +5,47 @@ import java.util.Optional;
 public final class Render {
 	private Render() {}
 	
-	public static String output(final Optional<Key> keyOpt) {
+	public static String result(Result result) {
+		return strongest(result.strongest) + "\t" + keyOpt(result.key);
+	}
+	
+	public static String strongest(int note) {
+		return SHARP[note] + "|" + FLAT[note];
+	}
+	
+	public static String keyOpt(final Optional<Key> keyOpt) {
 		if (keyOpt.isPresent()) {
 			final Key	key	= keyOpt.get(); 
-			return Render.ibsh(key) + "\t" + Render.camelot(key) + "\t" + Render.openKey(key) + "\t" + Render.musician(key, false)+ "\t" + Render.musician(key, true);
+			return Render.sharp(key) + "|" + Render.flat(key) + "|" + Render.openKey(key) + "|" + Render.camelot(key); 
 		}
 		else {
 			return "SILENCE";
 		}
 	}
 	
-	public static String ibsh(Key key) {
-		return key.name();
-	}
+	//-------------------------------------------------------------------------
 	
 	public static String camelot(Key key) {
 		switch (key.mode) {
-			case MAJOR:	return cof(key.note, 10) + "B";
-			case MINOR:	return cof(key.note, 7)  + "A";
+			case MAJOR:	return cof(key.pitch.ordinal(), 10) + "B";
+			case MINOR:	return cof(key.pitch.ordinal(), 7)  + "A";
 			default:	throw new IllegalArgumentException("unexpected mode: " + key.mode);
 		}
 	}
 	
 	public static String openKey(Key key) {
 		switch (key.mode) {
-			case MAJOR:	return cof(key.note, 3) + "d";
-			case MINOR:	return cof(key.note, 0) + "m";
+			case MAJOR:	return cof(key.pitch.ordinal(), 3) + "d";
+			case MINOR:	return cof(key.pitch.ordinal(), 0) + "m";
 			default:	throw new IllegalArgumentException("unexpected mode: " + key.mode);
 		}
 	}
 	
-	private static int cof(int note, int offset) {
-		return (note * 7 + offset) % 12 + 1;
+	private static int cof(int pitch, int offset) {
+		return (pitch * 7 + offset) % 12 + 1;
 	}
+	
+	//-------------------------------------------------------------------------
 	
 	private static final String[] SHARP	= {
 		"A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"
@@ -47,11 +55,23 @@ public final class Render {
 		"A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab"
 	};
 			
-	public static String musician(Key key, boolean sharp) {
-		switch (key.mode) {
-			case MAJOR:	return (sharp ? SHARP : FLAT)[key.note] + "M";
-			case MINOR:	return (sharp ? SHARP : FLAT)[key.note] + "m";
-			default:	throw new IllegalArgumentException("unexpected mode: " + key.mode);
+	public static String sharp(Key key) {
+		return musician(key, SHARP);
+	}
+	
+	public static String flat(Key key) {
+		return musician(key, FLAT);
+	}
+	
+	private static String musician(Key key, String[] names) {
+		return names[key.pitch.ordinal()] + musicianMode(key.mode);
+	}
+	
+	private static String musicianMode(Mode mode) {
+		switch (mode) {
+			case MAJOR:	return "";
+			case MINOR:	return "m";
+			default:	throw new IllegalArgumentException("unexpected mode: " + mode);
 		}
 	}
 }
