@@ -1,6 +1,9 @@
 target/
 project/boot/
+
+/doc/
+/versatz/
+
 /.settings
 /.project
 /.classpath
-/versatz/
