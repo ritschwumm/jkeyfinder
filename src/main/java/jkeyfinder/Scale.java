@@ -13,7 +13,7 @@ public final class Scale {
 	public static final Scale SIMPLE_MINOR		= new Scale(
 			1, 0, 1, 1,
 			0, 1, 0, 1,
-			1, 0, 1, 0); 
+			1, 0, 1, 0);
 	
 	public static final Scale KRUMHANSL_MAJOR	= new Scale(
 			6.35f,	2.23f,	3.48f,	2.33f,

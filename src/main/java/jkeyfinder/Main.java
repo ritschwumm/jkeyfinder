@@ -2,7 +2,7 @@ package jkeyfinder;
 
 import java.io.File;
 
-import org.jtransforms.utils.ConcurrencyUtils;
+import pl.edu.icm.jlargearrays.ConcurrencyUtils;
 
 public final class Main {
 	public static void main(String[] args) throws Exception {

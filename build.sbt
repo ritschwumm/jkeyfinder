@@ -1,6 +1,6 @@
 name			:= "jkeyfinder"
 organization	:= "de.djini"
-version			:= "0.2.0"
+version			:= "0.3.0"
 
 javacOptions	++= Seq(
 	"-source", "1.8",
@@ -8,7 +8,7 @@ javacOptions	++= Seq(
 )
 
 conflictManager		:= ConflictManager.strict
-libraryDependencies	+= "com.github.wendykierp"	% "JTransforms"	% "3.0"	% "compile"
+libraryDependencies	+= "com.github.wendykierp"	% "JTransforms"	% "3.1"	% "compile"
 
 // this is a pure java project
 crossPaths			:= false

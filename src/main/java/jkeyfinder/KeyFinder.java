@@ -154,7 +154,7 @@ public final class KeyFinder {
 		Optional<Key>	bestKey		= Optional.empty();
 		float			bestScore	= score(Config.profile.scale(Optional.<Mode>empty()), 0, inputVO);
 		for (Mode mode : Mode.values()) {
-			for (Pitch pitch: Pitch.values()) {
+			for (Pitch pitch : Pitch.values()) {
 				final Scale	scale	= Config.profile.scale(Optional.of(mode));
 				final float score	= score(scale, pitch.ordinal(), inputVO);
 				if (score > bestScore) {

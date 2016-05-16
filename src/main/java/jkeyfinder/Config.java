@@ -1,6 +1,16 @@
 package jkeyfinder;
 
 public final class Config {
+	/*
+	TODO fft size
+	-	lowest semitone should have enough bins for a clear separation.
+		=>	fft musty be large enough to provide the necessary resolution
+		=>	depends on the sample rate
+	-	highest semitone must not exceed half the sample rate
+	-	sk spread must not lead to clipping the windows
+		against lowest and highest usable fft bins
+	*/
+	
 	private Config() {}
 	
 	public static final int		semitones	= 12;
