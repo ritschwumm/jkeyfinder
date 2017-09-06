@@ -5,7 +5,7 @@ BASE="$(dirname "$0")/.."
 M2_REPO="$HOME/.m2/repository"
 IVY_CACHE="$HOME/.ivy2/cache"
 
-OWN_CLASSPATH="$BASE/target/eclipse-classes:$BASE/target/classes:$BASE/target/jkeyfinder-0.3.0.jar"
+OWN_CLASSPATH="$BASE/target/eclipse-classes:$BASE/target/classes:$BASE/target/jkeyfinder-0.4.0.jar"
 MVN_CLASSPATH="$M2_REPO/com/github/wendykierp/JTransforms/3.1/JTransforms-3.1.jar"
 IVY_CLASSPATH="$IVY_CACHE/com.github.wendykierp/JTransforms/jars/JTransforms-3.1.jar"
 CLASSPATH="$OWN_CLASSPATH:$OWN_CLASSPATH:$IVY_CLASSPATH:$MVN_CLASSPATH"

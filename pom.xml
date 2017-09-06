@@ -7,7 +7,7 @@
 	
 	<groupId>de.djini</groupId>
 	<artifactId>jkeyfinder</artifactId>
-	<version>0.3.0</version>
+	<version>0.4.0</version>
 	<packaging>jar</packaging>
 	
 	<name>jkeyfinder</name>

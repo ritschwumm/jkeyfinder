@@ -1,11 +1,16 @@
 name			:= "jkeyfinder"
 organization	:= "de.djini"
-version			:= "0.3.0"
+version			:= "0.4.0"
 
-javacOptions	++= Seq(
-	"-source", "1.8",
-	"-target", "1.8"
-)
+javacOptions in (Compile) ++=
+	Seq(
+		"-source", "1.8"
+	)
+javacOptions in (Compile, compile)	++=
+	Seq(
+		"-target", "1.8",
+		"-Werror"
+	)
 
 conflictManager		:= ConflictManager.strict
 libraryDependencies	+= "com.github.wendykierp"	% "JTransforms"	% "3.1"	% "compile"
