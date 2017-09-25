@@ -1,6 +1,6 @@
 name			:= "jkeyfinder"
 organization	:= "de.djini"
-version			:= "0.4.0"
+version			:= "0.4.1"
 
 javacOptions in (Compile) ++=
 	Seq(
@@ -8,8 +8,7 @@ javacOptions in (Compile) ++=
 	)
 javacOptions in (Compile, compile)	++=
 	Seq(
-		"-target", "1.8",
-		"-Werror"
+		"-target", "1.8"
 	)
 
 conflictManager		:= ConflictManager.strict
