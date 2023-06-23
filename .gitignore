@@ -1,10 +1,22 @@
 target/
 project/boot/
+/.bsp/
+
+/.settings
+/.project
+/.classpath
+
+metals.sbt
+.metals/
+.bloop/
+
+/.vscode/
+
+/override.sbt
+
+###
 
 private.sbt
 /doc/
 /versatz/
 
-/.settings
-/.project
-/.classpath
